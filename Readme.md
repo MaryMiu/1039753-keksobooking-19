@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Мария Орлова](https://up.htmlacademy.ru/javascript/19/user/1039753).
-* Наставник: `Александр Камнев`.
+* Наставник: [Александр Камнев](https://htmlacademy.ru/profile/id1339153).
 
 ---
 
