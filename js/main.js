@@ -10,11 +10,12 @@ var pinCheckin = ['12:00', '13:00', '14:00', '12:00', '13:00', '14:00', '12:00',
 var pinCheckout = ['13:00', '14:00', '12:00', '13:00', '14:00', '12:00', '13:00', '12:00'];
 var pinFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var pinDescription = ['строка с описанием 1', 'строка с описанием 2', 'строка с описанием 3', 'строка с описанием 4', 'строка с описанием 5', 'строка с описанием 6', 'строка с описанием 7', 'строка с описанием 8'];
-var pinPhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']
+var pinPhotos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
 var MAP_WIDTH = 1200;
-var MAP_HEIGHT = 704;
+var CCORD_X = 130;
+var COORD_Y = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
 
@@ -26,56 +27,56 @@ function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function makeRandomArray() {
-  return Math.random() - 0.5;
-};
-
-function calcPinPositionX(x) {
-  return x - (PIN_WIDTH / 2) + 'px';
-}
-
-function calcPinPositionY(y) {
-  return y - (PIN_HEIGHT) + 'px';
-}
-
 function createPin(index) {
-  return {
+  var pin = {
     'author': {
       'avatar': 'img/avatars/user0' + [index + 1] + '.png'
     },
     'offer': {
       'title': pinTitle[index],
-      'address': 'text',
+      'address': function () {
+        var addressX = pin.location.x;
+        var addressY = pin.location.y;
+        return addressX + ', ' + addressY;
+      },
       'price': pinPrice[index],
       'type': pinType[index],
       'rooms': pinRooms[index],
       'guests': pinGuests[getRandomArbitrary(0, pinGuests.length)],
       'checkin': pinCheckin[index],
       'checkout': pinCheckout[index],
-      'features': pinFeatures.sort(makeRandomArray),
+      'features': pinFeatures.slice(0, [getRandomArbitrary(1, pinFeatures.length + 1)]),
       'description': pinDescription[index],
-      'photos': 'http://o0.github.io/assets/images/tokyo/hotel1.jpg, http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+      'photos': pinPhotos.slice(0, [getRandomArbitrary(1, pinPhotos.length + 1)]),
     },
 
     'location': {
       'x': getRandomArbitrary(0, MAP_WIDTH),
-      'y': getRandomArbitrary(130, 630)
+      'y': getRandomArbitrary(CCORD_X, COORD_Y),
+      'calcPinPositionX': function () {
+        return this.x - (PIN_WIDTH / 2);
+      },
+      'calcPinPositionY': function () {
+        return this.y - (PIN_HEIGHT);
+      }
     }
-  }
+  };
+  return pin;
 }
 
 function renderPin(elem) {
   var pinCloneTemplate = pinTemplate.cloneNode(true);
-  pinCloneTemplate.style.left = calcPinPositionX(elem.location.x);
-  pinCloneTemplate.style.top = calcPinPositionY(elem.location.y);
+  pinCloneTemplate.style.left = elem.location.calcPinPositionX() + 'px';
+  pinCloneTemplate.style.top = elem.location.calcPinPositionY() + 'px';
   pinCloneTemplate.querySelector('img').src = elem.author.avatar;
   pinCloneTemplate.querySelector('img').alt = elem.offer.title;
+  elem.offer.address();
   fragment.appendChild(pinCloneTemplate);
 }
 
 removeClass('.map');
 
-for (let i = 0; i < 8; i++) {
+for (var i = 0; i < 8; i++) {
   var pin = createPin(i);
   pins.push(pin);
 }
