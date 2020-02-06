@@ -37,7 +37,6 @@ function getRandomDescription() {
 }
 
 function getRandomTime() {
-  //var hour = ['12:00', '13:00', '14:00'];
   return ['12:00', '13:00', '14:00'][getRandomArbitrary(0, 3)];
 }
 
