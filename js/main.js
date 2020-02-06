@@ -37,8 +37,8 @@ function getRandomDescription() {
 }
 
 function getRandomTime() {
-  var hour = ['12:00', '13:00', '14:00'];
-  return hour[getRandomArbitrary(0, hour.length)];
+  //var hour = ['12:00', '13:00', '14:00'];
+  return ['12:00', '13:00', '14:00'][getRandomArbitrary(0, 3)];
 }
 
 function getRandomImage() {
@@ -48,34 +48,34 @@ function getRandomImage() {
 
 function createPin(index) {
   var pin = {
-    'author': {
-      'avatar': 'img/avatars/user0' + [index + 1] + '.png'
+    author: {
+      avatar: 'img/avatars/user0' + [index + 1] + '.png'
     },
-    'offer': {
-      'title': getRandomTitle(),
-      'address': function () {
+    offer: {
+      title: getRandomTitle(),
+      address: function () {
         var addressX = pin.location.x;
         var addressY = pin.location.y;
         return addressX + ', ' + addressY;
       },
-      'price': getRandomArbitrary(MIN_PRICE, MAX_PRICE),
-      'type': pinType[getRandomArbitrary(0, pinType.length)],
-      'rooms': getRandomArbitrary(MIN_ROOMS, MAX_ROOMS),
-      'guests': getRandomArbitrary(MIN_GUESTS, MAX_GUESTS),
-      'checkin': getRandomTime(),
-      'checkout': getRandomTime(),
-      'features': pinFeatures.slice(0, [getRandomArbitrary(1, pinFeatures.length + 1)]),
-      'description': getRandomDescription(),
-      'photos': getRandomImage(),
+      price: getRandomArbitrary(MIN_PRICE, MAX_PRICE),
+      type: pinType[getRandomArbitrary(0, pinType.length)],
+      rooms: getRandomArbitrary(MIN_ROOMS, MAX_ROOMS),
+      guests: getRandomArbitrary(MIN_GUESTS, MAX_GUESTS),
+      checkin: getRandomTime(),
+      checkout: getRandomTime(),
+      features: pinFeatures.slice(0, [getRandomArbitrary(1, pinFeatures.length + 1)]),
+      description: getRandomDescription(),
+      photos: getRandomImage(),
     },
 
-    'location': {
-      'x': getRandomArbitrary(0, MAP_WIDTH),
-      'y': getRandomArbitrary(CCORD_X, COORD_Y),
-      'calcPinPositionX': function () {
+    location: {
+      x: getRandomArbitrary(0, MAP_WIDTH),
+      y: getRandomArbitrary(CCORD_X, COORD_Y),
+      calcPinPositionX: function () {
         return this.x - (PIN_WIDTH / 2);
       },
-      'calcPinPositionY': function () {
+      calcPinPositionY: function () {
         return this.y - (PIN_HEIGHT);
       }
     }
