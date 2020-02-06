@@ -93,7 +93,7 @@ function renderPin(elem) {
   fragment.appendChild(pinCloneTemplate);
 }
 
-(function showPins() {
+function showPins() {
   removeClass('.map');
 
   for (var i = 0; i < 8; i++) {
@@ -103,4 +103,7 @@ function renderPin(elem) {
 
   pins.forEach(renderPin);
   mapPins.appendChild(fragment);
-})();
+}
+
+showPins();
+
