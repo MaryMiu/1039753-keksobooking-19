@@ -26,23 +26,33 @@ function getRandomArbitrary(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
+function fetchRandomItems(arr) {
+  return arr[getRandomArbitrary(0, arr.length)];
+}
+
 function getRandomTitle() {
-  var titles = ['Квартирка в центре', 'Апартаменты рядом с императорским дворцом', 'Студия на Такэсита', 'Эко-Апартаменты в Одайба', 'Чистая квартира с красивым видом на Сумиду', 'Новая квартира, тепло, уютно, 200 этаж', 'Апартаменты над телевизионной башней', 'Уютная квартира рядом с вокзалом'];
-  return titles[getRandomArbitrary(0, titles.length)];
+  return fetchRandomItems(['Квартирка в центре', 'Апартаменты рядом с императорским дворцом', 'Студия на Такэсита', 'Эко-Апартаменты в Одайба', 'Чистая квартира с красивым видом на Сумиду', 'Новая квартира, тепло, уютно, 200 этаж', 'Апартаменты над телевизионной башней', 'Уютная квартира рядом с вокзалом']);
 }
 
 function getRandomDescription() {
-  var description = ['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.', 'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.', 'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.', 'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро, супермаркеты и парикмахерские.'];
-  return description[getRandomArbitrary(0, description.length)];
+  return fetchRandomItems(['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.', 'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.', 'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.', 'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро, супермаркеты и парикмахерские.']);
 }
 
 function getRandomTime() {
-  return ['12:00', '13:00', '14:00'][getRandomArbitrary(0, 3)];
+  return fetchRandomItems(['12:00', '13:00', '14:00']);
 }
 
 function getRandomImage() {
   var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
   return photos.slice(0, [getRandomArbitrary(1, photos.length + 1)]);
+}
+
+function calcPinPositionX(x) {
+  return x - (PIN_WIDTH / 2);
+}
+
+function calcPinPositionY(y) {
+  return y - (PIN_HEIGHT);
 }
 
 function createPin(index) {
@@ -70,13 +80,7 @@ function createPin(index) {
 
     location: {
       x: getRandomArbitrary(0, MAP_WIDTH),
-      y: getRandomArbitrary(CCORD_X, COORD_Y),
-      calcPinPositionX: function () {
-        return this.x - (PIN_WIDTH / 2);
-      },
-      calcPinPositionY: function () {
-        return this.y - (PIN_HEIGHT);
-      }
+      y: getRandomArbitrary(CCORD_X, COORD_Y)
     }
   };
   return pin;
@@ -84,8 +88,8 @@ function createPin(index) {
 
 function renderPin(elem) {
   var pinCloneTemplate = pinTemplate.cloneNode(true);
-  pinCloneTemplate.style.left = elem.location.calcPinPositionX() + 'px';
-  pinCloneTemplate.style.top = elem.location.calcPinPositionY() + 'px';
+  pinCloneTemplate.style.left = calcPinPositionX(elem.location.x) + 'px';
+  pinCloneTemplate.style.top = calcPinPositionY(elem.location.y) + 'px';
   pinCloneTemplate.querySelector('img').src = elem.author.avatar;
   pinCloneTemplate.querySelector('img').alt = elem.offer.title;
   elem.offer.address();
@@ -105,4 +109,3 @@ function showPins() {
 }
 
 showPins();
-
