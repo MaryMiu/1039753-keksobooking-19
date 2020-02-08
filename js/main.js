@@ -10,6 +10,7 @@ var MIN_GUESTS = 1;
 var MAX_GUESTS = 10;
 var MIN_ROOMS = 1;
 var MAX_ROOMS = 10;
+var PIN_AMOUNT = 8;
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var pins = [];
@@ -17,7 +18,8 @@ var pinType = ['palace', 'flat', 'house', 'bungalo'];
 var pinFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
-
+var counter = makeCounter();
+var map = document.querySelector('.map');
 
 function removeClass(el) {
   document.querySelector(el).classList.remove('map--faded');
@@ -29,6 +31,10 @@ function getRandomArbitrary(min, max) {
 
 function fetchRandomItems(arr) {
   return arr[getRandomArbitrary(0, arr.length)];
+}
+
+function fetchArrRandomLength(arr) {
+  return arr.slice(0, [getRandomArbitrary(1, arr.length + 1)]);
 }
 
 function getRandomTitle() {
@@ -44,8 +50,7 @@ function getRandomTime() {
 }
 
 function getRandomImage() {
-  var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  return photos.slice(0, [getRandomArbitrary(1, photos.length + 1)]);
+  return fetchArrRandomLength(['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']);
 }
 
 function calcPinPositionX(x) {
@@ -56,10 +61,26 @@ function calcPinPositionY(y) {
   return y - (PIN_HEIGHT);
 }
 
-function createPin(index) {
+function makeCounter() {
+  var currentCount = 1;
+
+  return function () {
+    return currentCount++;
+  };
+}
+
+function getAvatar() {
+  var imgCounter = counter();
+  if (String(imgCounter).length === 1) {
+    imgCounter = '0' + imgCounter;
+  }
+  return 'img/avatars/user' + imgCounter + '.png';
+}
+
+function createPin() {
   var pin = {
     author: {
-      avatar: 'img/avatars/user0' + [index + 1] + '.png'
+      avatar: getAvatar()
     },
     offer: {
       title: getRandomTitle(),
@@ -78,7 +99,6 @@ function createPin(index) {
       description: getRandomDescription(),
       photos: getRandomImage(),
     },
-
     location: {
       x: getRandomArbitrary(0, MAP_WIDTH),
       y: getRandomArbitrary(CCORD_X, COORD_Y)
@@ -100,7 +120,7 @@ function renderPin(elem) {
 function showPins() {
   removeClass('.map');
 
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < PIN_AMOUNT; i++) {
     var pin = createPin(i);
     pins.push(pin);
   }
@@ -110,3 +130,44 @@ function showPins() {
 }
 
 showPins();
+
+function selectOfferType(str) {
+  switch (str) {
+    case 'flat':
+      return 'Квартира';
+    case 'bungalo':
+      return 'Бунгало';
+    case 'house':
+      return 'Дом';
+    case 'palace':
+      return 'Дворец';
+    default:
+      throw new Error('Нет таких значений');
+  }
+}
+
+function createFeaturesElem(elem) {
+  return '<li class="popup__feature popup__feature--' + elem + '"></li>';
+}
+
+function renderCard(elem) {
+  var cardCloneTemplate = cardTemplate.cloneNode(true);
+  cardCloneTemplate.querySelector('.popup__title').textContent = elem.offer.title;
+  cardCloneTemplate.querySelector('.popup__text--address').textContent = elem.offer.address;
+  cardCloneTemplate.querySelector('.popup__text--price').textContent = elem.offer.price + ' ₽/ночь';
+  cardCloneTemplate.querySelector('.popup__type').textContent = selectOfferType(elem.offer.type);
+  cardCloneTemplate.querySelector('.popup__text--capacity').textContent = elem.offer.rooms + ' комнаты для ' + elem.offer.guests + ' гостей';
+  cardCloneTemplate.querySelector('.popup__text--time').textContent = 'Заезд после ' + elem.offer.checkin + ', выезд до ' + elem.offer.checkout;
+  cardCloneTemplate.querySelector('.popup__features').innerHtml = elem.offer.features.forEach(createFeaturesElem);
+  cardCloneTemplate.querySelector('.popup__description').textContent = elem.offer.description;
+  cardCloneTemplate.querySelector('.popup__avatar').src = elem.author.avatar;
+  fragment.appendChild(cardCloneTemplate);
+}
+
+function showCards() {
+  var pin = createPin();
+  renderCard(pin);
+  map.appendChild(fragment);
+}
+
+showCards();
