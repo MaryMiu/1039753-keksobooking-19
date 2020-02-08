@@ -10,13 +10,14 @@ var MIN_GUESTS = 1;
 var MAX_GUESTS = 10;
 var MIN_ROOMS = 1;
 var MAX_ROOMS = 10;
+var PIN_AMOUNT = 8;
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
 var pins = [];
 var pinType = ['palace', 'flat', 'house', 'bungalo'];
 var pinFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 var mapPins = document.querySelector('.map__pins');
 var fragment = document.createDocumentFragment();
-
+var counter = makeCounter();
 
 function removeClass(el) {
   document.querySelector(el).classList.remove('map--faded');
@@ -28,6 +29,10 @@ function getRandomArbitrary(min, max) {
 
 function fetchRandomItems(arr) {
   return arr[getRandomArbitrary(0, arr.length)];
+}
+
+function fetchArrRandomLength(arr) {
+  return arr.slice(0, [getRandomArbitrary(1, arr.length + 1)]);
 }
 
 function getRandomTitle() {
@@ -43,8 +48,7 @@ function getRandomTime() {
 }
 
 function getRandomImage() {
-  var photos = ['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg'];
-  return photos.slice(0, [getRandomArbitrary(1, photos.length + 1)]);
+  return fetchArrRandomLength(['http://o0.github.io/assets/images/tokyo/hotel1.jpg', 'http://o0.github.io/assets/images/tokyo/hotel2.jpg', 'http://o0.github.io/assets/images/tokyo/hotel3.jpg']);
 }
 
 function calcPinPositionX(x) {
@@ -55,10 +59,26 @@ function calcPinPositionY(y) {
   return y - (PIN_HEIGHT);
 }
 
-function createPin(index) {
+function makeCounter() {
+  var currentCount = 1;
+
+  return function () {
+    return currentCount++;
+  };
+}
+
+function getAvatar() {
+  var imgCounter = counter();
+  if (String(imgCounter).length === 1) {
+    imgCounter = '0' + imgCounter;
+  }
+  return 'img/avatars/user' + imgCounter + '.png';
+}
+
+function createPin() {
   var pin = {
     author: {
-      avatar: 'img/avatars/user0' + [index + 1] + '.png'
+      avatar: getAvatar()
     },
     offer: {
       title: getRandomTitle(),
@@ -77,7 +97,6 @@ function createPin(index) {
       description: getRandomDescription(),
       photos: getRandomImage(),
     },
-
     location: {
       x: getRandomArbitrary(0, MAP_WIDTH),
       y: getRandomArbitrary(CCORD_X, COORD_Y)
@@ -99,7 +118,7 @@ function renderPin(elem) {
 function showPins() {
   removeClass('.map');
 
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < PIN_AMOUNT; i++) {
     var pin = createPin(i);
     pins.push(pin);
   }
