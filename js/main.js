@@ -11,6 +11,7 @@ var MAX_GUESTS = 10;
 var MIN_ROOMS = 1;
 var MAX_ROOMS = 10;
 var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
+var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
 var pins = [];
 var pinType = ['palace', 'flat', 'house', 'bungalo'];
 var pinFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
