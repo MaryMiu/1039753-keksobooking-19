@@ -1,6 +1,6 @@
 'use strict';
 var MAP_WIDTH = 1200;
-var CCORD_X = 130;
+var COORD_X = 130;
 var COORD_Y = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
@@ -21,6 +21,7 @@ var fragment = document.createDocumentFragment();
 var counter = makeCounter();
 var map = document.querySelector('.map');
 
+
 function removeClass(el) {
   document.querySelector(el).classList.remove('map--faded');
 }
@@ -38,11 +39,22 @@ function fetchArrRandomLength(arr) {
 }
 
 function getRandomTitle() {
-  return fetchRandomItems(['Квартирка в центре', 'Апартаменты рядом с императорским дворцом', 'Студия на Такэсита', 'Эко-Апартаменты в Одайба', 'Чистая квартира с красивым видом на Сумиду', 'Новая квартира, тепло, уютно, 200 этаж', 'Апартаменты над телевизионной башней', 'Уютная квартира рядом с вокзалом']);
+  return fetchRandomItems(['Квартирка в центре', 'Апартаменты рядом с императорским дворцом',
+    'Студия на Такэсита', 'Эко-Апартаменты в Одайба', 'Чистая квартира с красивым видом на Сумиду',
+    'Новая квартира, тепло, уютно, 200 этаж', 'Апартаменты над телевизионной башней',
+    'Уютная квартира рядом с вокзалом'
+  ]);
 }
 
 function getRandomDescription() {
-  return fetchRandomItems(['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.', 'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.', 'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.', 'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро, супермаркеты и парикмахерские.']);
+  return fetchRandomItems(['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, ' +
+  'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
+  'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
+  'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
+  'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
+  'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
+  ' супермаркеты и парикмахерские.'
+  ]);
 }
 
 function getRandomTime() {
@@ -101,7 +113,7 @@ function createPin() {
     },
     location: {
       x: getRandomArbitrary(0, MAP_WIDTH),
-      y: getRandomArbitrary(CCORD_X, COORD_Y)
+      y: getRandomArbitrary(COORD_X, COORD_Y)
     }
   };
   return pin;
@@ -146,27 +158,39 @@ function selectOfferType(str) {
   }
 }
 
-function createFeaturesElem(elem) {
-  return '<li class="popup__feature popup__feature--' + elem + '"></li>';
+function createFeaturesElem(arr) {
+  var list = '';
+  arr.forEach(function (item) {
+    list += '<li class="popup__feature popup__feature--' + item + '"></li>';
+  });
+  return list;
+}
+
+function createPhotosElem(arr) {
+  var list = '';
+  arr.forEach(function (item) {
+    list += '<img src="' + item + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+  });
+  return list;
 }
 
 function renderCard(elem) {
   var cardCloneTemplate = cardTemplate.cloneNode(true);
   cardCloneTemplate.querySelector('.popup__title').textContent = elem.offer.title;
-  cardCloneTemplate.querySelector('.popup__text--address').textContent = elem.offer.address;
+  cardCloneTemplate.querySelector('.popup__text--address').textContent = elem.offer.address();
   cardCloneTemplate.querySelector('.popup__text--price').textContent = elem.offer.price + ' ₽/ночь';
   cardCloneTemplate.querySelector('.popup__type').textContent = selectOfferType(elem.offer.type);
   cardCloneTemplate.querySelector('.popup__text--capacity').textContent = elem.offer.rooms + ' комнаты для ' + elem.offer.guests + ' гостей';
   cardCloneTemplate.querySelector('.popup__text--time').textContent = 'Заезд после ' + elem.offer.checkin + ', выезд до ' + elem.offer.checkout;
-  cardCloneTemplate.querySelector('.popup__features').innerHtml = elem.offer.features.forEach(createFeaturesElem);
+  cardCloneTemplate.querySelector('.popup__features').innerHTML = createFeaturesElem(elem.offer.features);
   cardCloneTemplate.querySelector('.popup__description').textContent = elem.offer.description;
+  cardCloneTemplate.querySelector('.popup__photos').innerHTML = createPhotosElem(elem.offer.photos);
   cardCloneTemplate.querySelector('.popup__avatar').src = elem.author.avatar;
   fragment.appendChild(cardCloneTemplate);
 }
 
 function showCards() {
-  var pin = createPin();
-  renderCard(pin);
+  renderCard(pins[0]);
   map.appendChild(fragment);
 }
 
