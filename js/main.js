@@ -1,6 +1,6 @@
 'use strict';
 var MAP_WIDTH = 1200;
-var CCORD_X = 130;
+var COORD_X = 130;
 var COORD_Y = 630;
 var PIN_WIDTH = 50;
 var PIN_HEIGHT = 70;
@@ -109,7 +109,7 @@ function createPin() {
     },
     location: {
       x: getRandomArbitrary(0, MAP_WIDTH),
-      y: getRandomArbitrary(CCORD_X, COORD_Y)
+      y: getRandomArbitrary(COORD_X, COORD_Y)
     }
   };
   return pin;
