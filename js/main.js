@@ -40,20 +40,20 @@ function fetchArrRandomLength(arr) {
 
 function getRandomTitle() {
   return fetchRandomItems(['Квартирка в центре', 'Апартаменты рядом с императорским дворцом',
-    'Студия на Такэсита', 'Эко-Апартаменты в Одайба', 'Чистая квартира с красивым видом на Сумиду',
-    'Новая квартира, тепло, уютно, 200 этаж', 'Апартаменты над телевизионной башней',
-    'Уютная квартира рядом с вокзалом'
+  'Студия на Такэсита', 'Эко-Апартаменты в Одайба', 'Чистая квартира с красивым видом на Сумиду',
+  'Новая квартира, тепло, уютно, 200 этаж', 'Апартаменты над телевизионной башней',
+  'Уютная квартира рядом с вокзалом'
   ]);
 }
 
 function getRandomDescription() {
   return fetchRandomItems(['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, ' +
-    'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
-    'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
-    'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
-    'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
-    'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
-    ' супермаркеты и парикмахерские.'
+  'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
+  'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
+  'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
+  'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
+  'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
+  ' супермаркеты и парикмахерские.'
   ]);
 }
 
@@ -159,17 +159,17 @@ function selectOfferType(str) {
 }
 
 function createFeaturesElem(arr) {
-  var fragment = document.createDocumentFragment();
+  var list = document.createDocumentFragment();
   arr.forEach(function (item) {
     var elem = document.createElement('li');
     elem.className = 'popup__feature popup__feature--' + item;
-    fragment.append(elem);
+    list.append(elem);
   });
-  return fragment;
+  return list;
 }
 
 function createPhotosElem(arr) {
-  var fragment = document.createDocumentFragment();
+  var list = document.createDocumentFragment();
   arr.forEach(function (item) {
     var elem = document.createElement('img');
     elem.className = 'popup__photo';
@@ -177,9 +177,9 @@ function createPhotosElem(arr) {
     elem.height = 40;
     elem.alt = 'Фотография жилья';
     elem.src = item;
-    fragment.append(elem);
+    list.append(elem);
   });
-  return fragment;
+  return list;
 }
 
 function renderCard(elem) {
