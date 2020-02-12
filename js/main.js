@@ -48,12 +48,12 @@ function getRandomTitle() {
 
 function getRandomDescription() {
   return fetchRandomItems(['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, ' +
-  'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
-  'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
-  'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
-  'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
-  'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
-  ' супермаркеты и парикмахерские.'
+    'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
+    'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
+    'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
+    'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
+    'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
+    ' супермаркеты и парикмахерские.'
   ]);
 }
 
@@ -159,19 +159,27 @@ function selectOfferType(str) {
 }
 
 function createFeaturesElem(arr) {
-  var list = '';
+  var fragment = document.createDocumentFragment();
   arr.forEach(function (item) {
-    list += '<li class="popup__feature popup__feature--' + item + '"></li>';
+    var elem = document.createElement('li');
+    elem.className = 'popup__feature popup__feature--' + item;
+    fragment.append(elem);
   });
-  return list;
+  return fragment;
 }
 
 function createPhotosElem(arr) {
-  var list = '';
+  var fragment = document.createDocumentFragment();
   arr.forEach(function (item) {
-    list += '<img src="' + item + '" class="popup__photo" width="45" height="40" alt="Фотография жилья">';
+    var elem = document.createElement('img');
+    elem.className = 'popup__photo';
+    elem.width = 45;
+    elem.height = 40;
+    elem.alt = 'Фотография жилья';
+    elem.src = item;
+    fragment.append(elem);
   });
-  return list;
+  return fragment;
 }
 
 function renderCard(elem) {
@@ -182,9 +190,11 @@ function renderCard(elem) {
   cardCloneTemplate.querySelector('.popup__type').textContent = selectOfferType(elem.offer.type);
   cardCloneTemplate.querySelector('.popup__text--capacity').textContent = elem.offer.rooms + ' комнаты для ' + elem.offer.guests + ' гостей';
   cardCloneTemplate.querySelector('.popup__text--time').textContent = 'Заезд после ' + elem.offer.checkin + ', выезд до ' + elem.offer.checkout;
-  cardCloneTemplate.querySelector('.popup__features').innerHTML = createFeaturesElem(elem.offer.features);
+  cardCloneTemplate.querySelector('.popup__features').innerHTML = '';
+  cardCloneTemplate.querySelector('.popup__features').append(createFeaturesElem(elem.offer.features));
   cardCloneTemplate.querySelector('.popup__description').textContent = elem.offer.description;
-  cardCloneTemplate.querySelector('.popup__photos').innerHTML = createPhotosElem(elem.offer.photos);
+  cardCloneTemplate.querySelector('.popup__photos').innerHTML = '';
+  cardCloneTemplate.querySelector('.popup__photos').append(createPhotosElem(elem.offer.photos));
   cardCloneTemplate.querySelector('.popup__avatar').src = elem.author.avatar;
   fragment.appendChild(cardCloneTemplate);
 }
