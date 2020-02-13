@@ -356,13 +356,28 @@ function selectOfferOption(value) {
   }
 }
 
-var selectOffer = document.querySelector("#type");
+var selectOffer = document.querySelector('#type');
 selectOffer.addEventListener('change', selectOfferChangeHandler);
 
 function selectOfferChangeHandler(evt) {
-  var priceOfferInput = document.querySelector('#price');
+  var priceInput = document.querySelector('#price');
   var currentValue = evt.target.value;
-  var minPriceOffer = selectOfferOption(currentValue);
-  priceOfferInput.setAttribute('min', minPriceOffer);
-  priceOfferInput.setAttribute('placeholder', minPriceOffer);
+  var minPrice = selectOfferOption(currentValue);
+  priceInput.setAttribute('min', minPrice);
+  priceInput.setAttribute('placeholder', minPrice);
 }
+
+var selectTimein = document.querySelector('#timein');
+var selectTimeout = document.querySelector('#timeout');
+
+function selectTimeHandler(evt) {
+  var currentIndex = evt.target.options.selectedIndex;
+  if (evt.target === selectTimein) {
+    selectTimeout.options[currentIndex].selected = true;
+  } else {
+    selectTimein.options[currentIndex].selected = true;
+  }
+}
+
+selectTimein.addEventListener('change', selectTimeHandler);
+selectTimeout.addEventListener('change', selectTimeHandler);
