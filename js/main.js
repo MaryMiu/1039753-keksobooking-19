@@ -22,8 +22,12 @@ var counter = makeCounter();
 var map = document.querySelector('.map');
 
 
-function removeClass(el) {
-  document.querySelector(el).classList.remove('map--faded');
+function showMap() {
+  map.classList.remove('map--faded');
+}
+
+function hideMap() {
+  map.classList.add('map--faded');
 }
 
 function getRandomArbitrary(min, max) {
@@ -49,10 +53,10 @@ function getRandomTitle() {
 function getRandomDescription() {
   return fetchRandomItems(['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, ' +
     'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
-  'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
+    'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
     'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
-  'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
-  'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
+    'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
+    'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
     ' супермаркеты и парикмахерские.'
   ]);
 }
@@ -130,7 +134,7 @@ function renderPin(elem) {
 }
 
 function showPins() {
-  removeClass('.map');
+  showMap();
 
   for (var i = 0; i < PIN_AMOUNT; i++) {
     var pin = createPin(i);
@@ -206,11 +210,10 @@ function showCards() {
 // showCards();
 
 
-// проходим по всем элементам и добавляем им disabled
+// проходим по всем элементам и добавляем / убираем disabled
 
 var formNotice = document.querySelector('.ad-form');
 var formMap = document.querySelector('.map__filters');
-
 
 function disableForm(form) {
   var inputs = form.querySelectorAll('input');
@@ -236,21 +239,34 @@ function enableForm(form) {
   });
 }
 
-function deactivate() {
+function disableAllForm() {
   disableForm(formNotice);
   disableForm(formMap);
 }
 
-deactivate();
+function enableAllForm() {
+  enableForm(formNotice);
+  enableForm(formMap);
+}
 
-// функция активации - событие mousedown на .map__pin—main
+disableAllForm();
+
+// функция деактивации
+
+function deactivate() {
+  disableAllForm();
+  formNotice.classList.add('ad-form--disabled');
+}
+
+// функция активации
 
 function activate() {
   showPins();
-  enableForm(formNotice);
-  enableForm(formMap);
+  enableAllForm();
   formNotice.classList.remove('ad-form--disabled');
 }
+
+// событие mousedown на .map__pin—main
 
 function pinMouseDownHandler(evt) {
   if (evt.button === 0) {
@@ -272,5 +288,26 @@ var pinMain = document.querySelector('.map__pin--main');
 pinMain.addEventListener('mousedown', pinMouseDownHandler);
 pinMain.addEventListener('keydown', pinKeydownHandler);
 
+// сброс формы
+
+var resetButton = formNotice.querySelector('.ad-form__reset');
+
+resetButton.addEventListener('click', function () {
+  deactivate();
+  removePins();
+  hideMap();
+  pinMain.addEventListener('mousedown', pinMouseDownHandler);
+  pinMain.addEventListener('keydown', pinKeydownHandler);
+});
+
+function removePins() {
+  var selectPins = mapPins.querySelectorAll('.map__pin');
+  for (var i = 0; i < selectPins.length; i++) {
+    var element = selectPins[i];
+    if (!element.contains(pinMain)) {
+      element.remove();
+    }
+  }
+}
 
 // валидация формы объявления
