@@ -48,12 +48,12 @@ function getRandomTitle() {
 
 function getRandomDescription() {
   return fetchRandomItems(['Можно разместить 20 человек! Удачное расположение в центре и близость к техника, ' +
-  'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
+    'постельное белье, полотенца. Чистая ванна.Wi-Fi на всей территории. Можно с животными.',
   'Квартира оборудована всем необходимым от постельного белья до современной бытовой техники, а так же имеется ' +
-  'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
+    'безлимитный бесплатный Wi-Fi Интернет. И, извините, мы не говорим по-русски.',
   'Новый дом, современный ремонт, идеальная чистота, безупречное белье, есть все для комфортного проживания.',
   'Уютная, тёплая квартира с шикарным местоположением. Рядом железнодорожный вокзал и станция метро,' +
-  ' супермаркеты и парикмахерские.'
+    ' супермаркеты и парикмахерские.'
   ]);
 }
 
@@ -141,7 +141,6 @@ function showPins() {
   mapPins.appendChild(fragment);
 }
 
-showPins();
 
 function selectOfferType(str) {
   switch (str) {
@@ -204,4 +203,74 @@ function showCards() {
   map.appendChild(fragment);
 }
 
-showCards();
+// showCards();
+
+
+// проходим по всем элементам и добавляем им disabled
+
+var formNotice = document.querySelector('.ad-form');
+var formMap = document.querySelector('.map__filters');
+
+
+function disableForm(form) {
+  var inputs = form.querySelectorAll('input');
+  var selects = form.querySelectorAll('select');
+  inputs.forEach(function (item) {
+    item.disabled = true;
+  });
+
+  selects.forEach(function (item) {
+    item.disabled = true;
+  });
+}
+
+function enableForm(form) {
+  var inputs = form.querySelectorAll('input');
+  var selects = form.querySelectorAll('select');
+  inputs.forEach(function (item) {
+    item.disabled = false;
+  });
+
+  selects.forEach(function (item) {
+    item.disabled = false;
+  });
+}
+
+function deactivate() {
+  disableForm(formNotice);
+  disableForm(formMap);
+}
+
+deactivate();
+
+// функция активации - событие mousedown на .map__pin—main
+
+function activate() {
+  showPins();
+  enableForm(formNotice);
+  enableForm(formMap);
+  formNotice.classList.remove('ad-form--disabled');
+}
+
+function pinMouseDownHandler(evt) {
+  if (evt.button === 0) {
+    activate();
+    pinMain.removeEventListener('mousedown', pinMouseDownHandler);
+  }
+}
+
+function pinKeydownHandler(evt) {
+  var ENTER_KEY = 'Enter';
+  if (evt.key === ENTER_KEY) {
+    activate();
+    pinMain.removeEventListener('keydown', pinKeydownHandler);
+  }
+}
+
+var pinMain = document.querySelector('.map__pin--main');
+
+pinMain.addEventListener('mousedown', pinMouseDownHandler);
+pinMain.addEventListener('keydown', pinKeydownHandler);
+
+
+// валидация формы объявления
