@@ -370,7 +370,7 @@ function selectOfferChangeHandler(evt) {
 var selectTimein = document.querySelector('#timein');
 var selectTimeout = document.querySelector('#timeout');
 
-function selectTimeHandler(evt) {
+function selectTimeChangeHandler(evt) {
   var currentIndex = evt.target.options.selectedIndex;
   if (evt.target === selectTimein) {
     selectTimeout.options[currentIndex].selected = true;
@@ -379,5 +379,30 @@ function selectTimeHandler(evt) {
   }
 }
 
-selectTimein.addEventListener('change', selectTimeHandler);
-selectTimeout.addEventListener('change', selectTimeHandler);
+selectTimein.addEventListener('change', selectTimeChangeHandler);
+selectTimeout.addEventListener('change', selectTimeChangeHandler);
+
+
+var selectRooms = document.querySelector('#room_number');
+var selectGuests = document.querySelector('#capacity');
+
+function selectRoomsChangeHandler(evt) {
+  var currentIndex = evt.target.options.selectedIndex;
+  console.log(currentIndex);
+  switch (currentIndex) {
+    case 2:
+      console.log("Для 3 гостей");
+    case 1:
+      console.log("Для 2 гостей");
+    case 0:
+      console.log("Для 1 гостя");
+      break;
+    case 3:
+      console.log("Не для гостей");
+      break;
+    default:
+      break;
+  }
+}
+
+selectRooms.addEventListener('change', selectRoomsChangeHandler);
