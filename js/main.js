@@ -298,6 +298,7 @@ resetButton.addEventListener('click', function () {
   hideMap();
   pinMain.addEventListener('mousedown', pinMouseDownHandler);
   pinMain.addEventListener('keydown', pinKeydownHandler);
+  formMap.reset();
 });
 
 function removePins() {
