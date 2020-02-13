@@ -312,3 +312,57 @@ function removePins() {
 }
 
 // валидация формы объявления
+
+var titleInput = document.querySelector('#title');
+
+titleInput.addEventListener('invalid', function () {
+  if (titleInput.validity.tooShort) {
+    titleInput.setCustomValidity('Описание должно состоять минимум из 30-ти символов');
+  } else if (titleInput.validity.tooLong) {
+    titleInput.setCustomValidity('Описание не должно превышать 100 символов');
+  } else if (titleInput.validity.valueMissing) {
+    titleInput.setCustomValidity('Обязательное поле');
+  } else {
+    titleInput.setCustomValidity('');
+  }
+});
+
+var pricePerNightInput = document.querySelector('#title');
+
+pricePerNightInput.addEventListener('invalid', function () {
+  if (pricePerNightInput.validity.tooShort) {
+    pricePerNightInput.setCustomValidity('Цена за ночь не может быть менее 0 руб.');
+  } else if (pricePerNightInput.validity.tooLong) {
+    pricePerNightInput.setCustomValidity('Цена за ночь не должна превышать 1 000 000 руб.');
+  } else if (pricePerNightInput.validity.valueMissing) {
+    pricePerNightInput.setCustomValidity('Обязательное поле');
+  } else {
+    pricePerNightInput.setCustomValidity('');
+  }
+});
+
+function selectOfferOption(value) {
+  switch (value) {
+    case 'flat':
+      return 1000;
+    case 'bungalo':
+      return 0;
+    case 'house':
+      return 5000;
+    case 'palace':
+      return 10000;
+    default:
+      throw new Error('Нет таких значений');
+  }
+}
+
+var selectOffer = document.querySelector("#type");
+selectOffer.addEventListener('change', selectOfferChangeHandler);
+
+function selectOfferChangeHandler(evt) {
+  var priceOfferInput = document.querySelector('#price');
+  var currentValue = evt.target.value;
+  var minPriceOffer = selectOfferOption(currentValue);
+  priceOfferInput.setAttribute('min', minPriceOffer);
+  priceOfferInput.setAttribute('placeholder', minPriceOffer);
+}
