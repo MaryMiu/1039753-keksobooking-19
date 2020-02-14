@@ -327,7 +327,7 @@ titleInput.addEventListener('invalid', function () {
   }
 });
 
-var pricePerNightInput = document.querySelector('#title');
+var pricePerNightInput = document.querySelector('#price');
 
 pricePerNightInput.addEventListener('invalid', function () {
   if (pricePerNightInput.validity.tooShort) {
@@ -429,3 +429,30 @@ function selectRoomsChangeHandler(evt) {
 }
 
 selectRooms.addEventListener('change', selectRoomsChangeHandler);
+
+//координаты главного пина
+
+function calcCenterPositionPin() {
+  var MAIN_PIN_WIDTH = 62;
+  var MAIN_PIN_HEIGHT = 84;
+  var addressInput = document.querySelector("#address");
+
+  var startCoords = {
+    x: pinMain.offsetLeft,
+    y: pinMain.offsetTop
+  };
+
+  var centerPositionCoords = {
+    x: function () {
+      return startCoords.x + MAIN_PIN_WIDTH / 2;
+
+    },
+    y: function () {
+      return startCoords.y + MAIN_PIN_HEIGHT;
+    }
+  }
+
+  addressInput.value = centerPositionCoords.x() + ', ' + centerPositionCoords.y();
+}
+
+calcCenterPositionPin();
