@@ -341,6 +341,8 @@ pricePerNightInput.addEventListener('invalid', function () {
   }
 });
 
+// Тип жилья
+
 function selectOfferOption(value) {
   switch (value) {
     case 'flat':
@@ -358,6 +360,8 @@ function selectOfferOption(value) {
 
 var selectOffer = document.querySelector('#type');
 selectOffer.addEventListener('change', selectOfferChangeHandler);
+
+// Синхронизация типа жилья и цены за ночь
 
 function selectOfferChangeHandler(evt) {
   var priceInput = document.querySelector('#price');
@@ -382,26 +386,45 @@ function selectTimeChangeHandler(evt) {
 selectTimein.addEventListener('change', selectTimeChangeHandler);
 selectTimeout.addEventListener('change', selectTimeChangeHandler);
 
+// Синхронизация кол-ва комнат и кол-ва мест
 
 var selectRooms = document.querySelector('#room_number');
 var selectGuests = document.querySelector('#capacity');
+var optionsGuests = selectGuests.options;
+
+function disableSelectGuests() {
+  for (var i = 0; i < optionsGuests.length; i++) {
+    optionsGuests[i].disabled = true;
+  }
+}
+
+function selectedSelectGuests() {
+  for (var i = 0; i < optionsGuests.length; i++) {
+    if (!optionsGuests[i].disabled) {
+      optionsGuests[i].selected = true;
+      return;
+    }
+  }
+}
 
 function selectRoomsChangeHandler(evt) {
   var currentIndex = evt.target.options.selectedIndex;
-  console.log(currentIndex);
+  disableSelectGuests();
   switch (currentIndex) {
     case 2:
-      console.log("Для 3 гостей");
+      selectGuests.options[0].disabled = false;
     case 1:
-      console.log("Для 2 гостей");
+      selectGuests.options[1].disabled = false;
     case 0:
-      console.log("Для 1 гостя");
+      selectGuests.options[2].disabled = false;
+      selectedSelectGuests();
       break;
     case 3:
-      console.log("Не для гостей");
+      selectGuests.options[3].disabled = false;
+      selectedSelectGuests();
       break;
     default:
-      break;
+      throw new Error('Нет таких значений');
   }
 }
 
