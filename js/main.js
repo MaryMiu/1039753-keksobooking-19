@@ -216,45 +216,35 @@ var formNotice = document.querySelector('.ad-form');
 var formMap = document.querySelector('.map__filters');
 
 function disableForm(form) {
-  var inputs = form.querySelectorAll('input');
-  var selects = form.querySelectorAll('select');
-  inputs.forEach(function (item) {
-    item.disabled = true;
-  });
-
-  selects.forEach(function (item) {
+  var elems = form.querySelectorAll('input, select');
+  elems.forEach(function (item) {
     item.disabled = true;
   });
 }
 
 function enableForm(form) {
-  var inputs = form.querySelectorAll('input');
-  var selects = form.querySelectorAll('select');
-  inputs.forEach(function (item) {
-    item.disabled = false;
-  });
-
-  selects.forEach(function (item) {
+  var elems = form.querySelectorAll('input, select');
+  elems.forEach(function (item) {
     item.disabled = false;
   });
 }
 
-function disableAllForm() {
+function disableAllForms() {
   disableForm(formNotice);
   disableForm(formMap);
 }
 
-function enableAllForm() {
+function enableAllForms() {
   enableForm(formNotice);
   enableForm(formMap);
 }
 
-disableAllForm();
+disableAllForms();
 
 // функция деактивации
 
 function deactivate() {
-  disableAllForm();
+  disableAllForms();
   formNotice.classList.add('ad-form--disabled');
 }
 
@@ -262,7 +252,7 @@ function deactivate() {
 
 function activate() {
   showPins();
-  enableAllForm();
+  enableAllForms();
   formNotice.classList.remove('ad-form--disabled');
 }
 
