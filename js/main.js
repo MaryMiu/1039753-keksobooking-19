@@ -210,8 +210,6 @@ function showCards() {
 // showCards();
 
 
-// проходим по всем элементам и добавляем / убираем disabled
-
 var formNotice = document.querySelector('.ad-form');
 var formMap = document.querySelector('.map__filters');
 
@@ -241,22 +239,16 @@ function enableAllForms() {
 
 disableAllForms();
 
-// функция деактивации
-
 function deactivate() {
   disableAllForms();
   formNotice.classList.add('ad-form--disabled');
 }
-
-// функция активации
 
 function activate() {
   showPins();
   enableAllForms();
   formNotice.classList.remove('ad-form--disabled');
 }
-
-// событие mousedown на .map__pin—main
 
 function pinMouseDownHandler(evt) {
   if (evt.button === 0) {
@@ -278,8 +270,6 @@ var pinMain = document.querySelector('.map__pin--main');
 pinMain.addEventListener('mousedown', pinMouseDownHandler);
 pinMain.addEventListener('keydown', pinKeydownHandler);
 
-// сброс формы
-
 var resetButton = formNotice.querySelector('.ad-form__reset');
 
 resetButton.addEventListener('click', function () {
@@ -300,8 +290,6 @@ function removePins() {
     }
   }
 }
-
-// валидация формы объявления
 
 var titleInput = document.querySelector('#title');
 
@@ -331,8 +319,6 @@ pricePerNightInput.addEventListener('invalid', function () {
   }
 });
 
-// Тип жилья
-
 function selectOfferOption(value) {
   switch (value) {
     case 'flat':
@@ -350,8 +336,6 @@ function selectOfferOption(value) {
 
 var selectOffer = document.querySelector('#type');
 selectOffer.addEventListener('change', selectOfferChangeHandler);
-
-// Синхронизация типа жилья и цены за ночь
 
 function selectOfferChangeHandler(evt) {
   var priceInput = document.querySelector('#price');
@@ -375,8 +359,6 @@ function selectTimeChangeHandler(evt) {
 
 selectTimein.addEventListener('change', selectTimeChangeHandler);
 selectTimeout.addEventListener('change', selectTimeChangeHandler);
-
-// Синхронизация кол-ва комнат и кол-ва мест
 
 var selectRooms = document.querySelector('#room_number');
 var selectGuests = document.querySelector('#capacity');
@@ -419,8 +401,6 @@ function selectRoomsChangeHandler(evt) {
 }
 
 selectRooms.addEventListener('change', selectRoomsChangeHandler);
-
-//координаты главного пина
 
 function calcCenterPositionPin() {
   var MAIN_PIN_WIDTH = 62;
