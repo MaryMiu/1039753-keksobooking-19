@@ -207,7 +207,7 @@ function showCards() {
   map.appendChild(fragment);
 }
 
-//showCards();
+// showCards();
 
 
 var formNotice = document.querySelector('.ad-form');
