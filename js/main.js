@@ -386,8 +386,10 @@ function selectRoomsChangeHandler(evt) {
   switch (currentValue) {
     case '3':
       selectGuests.options[0].disabled = false;
+      break;
     case '2':
       selectGuests.options[1].disabled = false;
+      break;
     case '1':
       selectGuests.options[2].disabled = false;
       selectedSelectGuests();
