@@ -308,8 +308,9 @@ titleInput.addEventListener('invalid', function () {
 var pricePerNightInput = document.querySelector('#price');
 
 pricePerNightInput.addEventListener('invalid', function () {
-  if (pricePerNightInput.validity.tooShort) {
-    pricePerNightInput.setCustomValidity('Цена за ночь не может быть менее 0 руб.');
+  if (pricePerNightInput.validity.rangeUnderflow) {
+    var minPricePerNightInput = pricePerNightInput.getAttribute("min");
+    pricePerNightInput.setCustomValidity('Цена за ночь не может быть менее ' + minPricePerNightInput + ' руб.');
   } else if (pricePerNightInput.validity.tooLong) {
     pricePerNightInput.setCustomValidity('Цена за ночь не должна превышать 1 000 000 руб.');
   } else if (pricePerNightInput.validity.valueMissing) {
