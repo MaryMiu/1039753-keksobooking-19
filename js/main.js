@@ -381,18 +381,18 @@ function selectedSelectGuests() {
 }
 
 function selectRoomsChangeHandler(evt) {
-  var currentIndex = evt.target.options.selectedIndex;
+  var currentValue = evt.target.value;
   disableSelectGuests();
-  switch (currentIndex) {
-    case 2:
+  switch (currentValue) {
+    case "3":
       selectGuests.options[0].disabled = false;
-    case 1:
+    case "2":
       selectGuests.options[1].disabled = false;
-    case 0:
+    case "1":
       selectGuests.options[2].disabled = false;
       selectedSelectGuests();
       break;
-    case 3:
+    case "100":
       selectGuests.options[3].disabled = false;
       selectedSelectGuests();
       break;
