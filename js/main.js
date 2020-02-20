@@ -207,7 +207,7 @@ function showCards() {
   map.appendChild(fragment);
 }
 
-// showCards();
+//showCards();
 
 
 var formNotice = document.querySelector('.ad-form');
@@ -397,33 +397,24 @@ function selectRoomsChangeHandler(evt) {
       selectedSelectGuests();
       break;
     default:
-      throw new Error('Нет таких значений');
+      break;
   }
 }
 
 selectRooms.addEventListener('change', selectRoomsChangeHandler);
 
-function calcCenterPositionPin() {
+function getCenterPositionPin(elem) {
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 84;
-  var addressInput = document.querySelector('#address');
-
-  var startCoords = {
-    x: pinMain.offsetLeft,
-    y: pinMain.offsetTop
-  };
-
-  var centerPositionCoords = {
-    x: function () {
-      return startCoords.x + MAIN_PIN_WIDTH / 2;
-
-    },
-    y: function () {
-      return startCoords.y + MAIN_PIN_HEIGHT;
-    }
-  };
-
-  addressInput.value = centerPositionCoords.x() + ', ' + centerPositionCoords.y();
+  var centerPinX = elem.offsetLeft + MAIN_PIN_WIDTH / 2;
+  var centerPinY = elem.offsetTop + MAIN_PIN_HEIGHT;
+  return centerPinX + ', ' + centerPinY;
 }
 
-calcCenterPositionPin();
+function setAddressInputValue() {
+  var addressInput = document.querySelector('#address');
+  var centerPositionPin = getCenterPositionPin(pinMain);
+  addressInput.value = centerPositionPin;
+}
+
+setAddressInputValue();
