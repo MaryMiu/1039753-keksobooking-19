@@ -311,7 +311,7 @@ pricePerNightInput.addEventListener('invalid', function () {
   if (pricePerNightInput.validity.rangeUnderflow) {
     var minPricePerNightInput = pricePerNightInput.getAttribute("min");
     pricePerNightInput.setCustomValidity('Цена за ночь не может быть менее ' + minPricePerNightInput + ' руб.');
-  } else if (pricePerNightInput.validity.tooLong) {
+  } else if (pricePerNightInput.validity.rangeOverflow) {
     pricePerNightInput.setCustomValidity('Цена за ночь не должна превышать 1 000 000 руб.');
   } else if (pricePerNightInput.validity.valueMissing) {
     pricePerNightInput.setCustomValidity('Обязательное поле');
