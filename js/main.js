@@ -309,7 +309,7 @@ var pricePerNightInput = document.querySelector('#price');
 
 pricePerNightInput.addEventListener('invalid', function () {
   if (pricePerNightInput.validity.rangeUnderflow) {
-    var minPricePerNightInput = pricePerNightInput.getAttribute("min");
+    var minPricePerNightInput = pricePerNightInput.getAttribute('min');
     pricePerNightInput.setCustomValidity('Цена за ночь не может быть менее ' + minPricePerNightInput + ' руб.');
   } else if (pricePerNightInput.validity.rangeOverflow) {
     pricePerNightInput.setCustomValidity('Цена за ночь не должна превышать 1 000 000 руб.');
@@ -384,15 +384,15 @@ function selectRoomsChangeHandler(evt) {
   var currentValue = evt.target.value;
   disableSelectGuests();
   switch (currentValue) {
-    case "3":
+    case '3':
       selectGuests.options[0].disabled = false;
-    case "2":
+    case '2':
       selectGuests.options[1].disabled = false;
-    case "1":
+    case '1':
       selectGuests.options[2].disabled = false;
       selectedSelectGuests();
       break;
-    case "100":
+    case '100':
       selectGuests.options[3].disabled = false;
       selectedSelectGuests();
       break;
@@ -406,7 +406,7 @@ selectRooms.addEventListener('change', selectRoomsChangeHandler);
 function calcCenterPositionPin() {
   var MAIN_PIN_WIDTH = 62;
   var MAIN_PIN_HEIGHT = 84;
-  var addressInput = document.querySelector("#address");
+  var addressInput = document.querySelector('#address');
 
   var startCoords = {
     x: pinMain.offsetLeft,
