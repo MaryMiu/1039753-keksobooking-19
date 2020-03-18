@@ -305,7 +305,7 @@ function disableSelectGuests() {
   }
 }
 
-function selectedSelectGuests() {
+function selectGuestsCount() {
   for (var i = 0; i < optionsGuests.length; i++) {
     if (!optionsGuests[i].disabled) {
       optionsGuests[i].selected = true;
@@ -326,11 +326,11 @@ function selectRoomsChangeHandler(evt) {
       break;
     case '1':
       selectGuests.options[2].disabled = false;
-      selectedSelectGuests();
+      selectGuestsCount();
       break;
     case '100':
       selectGuests.options[3].disabled = false;
-      selectedSelectGuests();
+      selectGuestsCount();
       break;
     default:
       break;
