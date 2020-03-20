@@ -9,7 +9,7 @@
       var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
       var cardCloneTemplate = cardTemplate.cloneNode(true);
       cardCloneTemplate.querySelector('.popup__title').textContent = elem.offer.title;
-      cardCloneTemplate.querySelector('.popup__text--address').textContent = elem.offer.address();
+      cardCloneTemplate.querySelector('.popup__text--address').textContent = elem.offer.address;
       cardCloneTemplate.querySelector('.popup__text--price').textContent = elem.offer.price + ' ₽/ночь';
       cardCloneTemplate.querySelector('.popup__type').textContent = selectOfferType(elem.offer.type);
       cardCloneTemplate.querySelector('.popup__text--capacity').textContent = elem.offer.rooms + ' комнаты для ' + elem.offer.guests + ' гостей';
