@@ -2,7 +2,6 @@
 
 (function () {
   var ESC_KEY = 'Escape';
-  var ENTER_KEY = 'Enter';
   var map = document.querySelector('.map');
   var mapPins = document.querySelector('.map__pins');
 
