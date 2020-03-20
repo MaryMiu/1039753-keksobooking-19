@@ -3,6 +3,61 @@
 (function () {
   var formNotice = document.querySelector('.ad-form');
   var formMap = document.querySelector('.map__filters');
+  var pinMain = document.querySelector('.map__pin--main');
+  var resetButton = formNotice.querySelector('.ad-form__reset');
+  var titleInput = document.querySelector('#title');
+  var pricePerNightInput = document.querySelector('#price');
+  var selectOffer = document.querySelector('#type');
+  var selectTimein = document.querySelector('#timein');
+  var selectTimeout = document.querySelector('#timeout');
+  var selectRooms = document.querySelector('#room_number');
+  var selectGuests = document.querySelector('#capacity');
+  var optionsGuests = selectGuests.options;
+
+  disableAllForms();
+  setAddressInputValue();
+
+  pinMain.addEventListener('mousedown', pinMouseDownHandler);
+  pinMain.addEventListener('keydown', pinKeydownHandler);
+
+  resetButton.addEventListener('click', function () {
+    deactivate();
+    window.pins.remove();
+    window.map.hide();
+    pinMain.addEventListener('mousedown', pinMouseDownHandler);
+    pinMain.addEventListener('keydown', pinKeydownHandler);
+    formMap.reset();
+  });
+
+  titleInput.addEventListener('invalid', function () {
+    if (titleInput.validity.tooShort) {
+      titleInput.setCustomValidity('Описание должно состоять минимум из 30-ти символов');
+    } else if (titleInput.validity.tooLong) {
+      titleInput.setCustomValidity('Описание не должно превышать 100 символов');
+    } else if (titleInput.validity.valueMissing) {
+      titleInput.setCustomValidity('Обязательное поле');
+    } else {
+      titleInput.setCustomValidity('');
+    }
+  });
+
+  pricePerNightInput.addEventListener('invalid', function () {
+    if (pricePerNightInput.validity.rangeUnderflow) {
+      var minPricePerNightInput = pricePerNightInput.getAttribute('min');
+      pricePerNightInput.setCustomValidity('Цена за ночь не может быть менее ' + minPricePerNightInput + ' руб.');
+    } else if (pricePerNightInput.validity.rangeOverflow) {
+      pricePerNightInput.setCustomValidity('Цена за ночь не должна превышать 1 000 000 руб.');
+    } else if (pricePerNightInput.validity.valueMissing) {
+      pricePerNightInput.setCustomValidity('Обязательное поле');
+    } else {
+      pricePerNightInput.setCustomValidity('');
+    }
+  });
+
+  selectOffer.addEventListener('change', selectOfferChangeHandler);
+  selectTimein.addEventListener('change', selectTimeChangeHandler);
+  selectTimeout.addEventListener('change', selectTimeChangeHandler);
+  selectRooms.addEventListener('change', selectRoomsChangeHandler);
 
   function disableForm(form) {
     var elems = form.querySelectorAll('input, select');
@@ -27,8 +82,6 @@
     enableForm(formNotice);
     enableForm(formMap);
   }
-
-  disableAllForms();
 
   function deactivate() {
     disableAllForms();
@@ -56,52 +109,6 @@
     }
   }
 
-  var pinMain = document.querySelector('.map__pin--main');
-
-  pinMain.addEventListener('mousedown', pinMouseDownHandler);
-  pinMain.addEventListener('keydown', pinKeydownHandler);
-
-  var resetButton = formNotice.querySelector('.ad-form__reset');
-
-  resetButton.addEventListener('click', function () {
-    deactivate();
-    window.pins.remove();
-    window.map.hide();
-    pinMain.addEventListener('mousedown', pinMouseDownHandler);
-    pinMain.addEventListener('keydown', pinKeydownHandler);
-    formMap.reset();
-  });
-
-
-  var titleInput = document.querySelector('#title');
-
-  titleInput.addEventListener('invalid', function () {
-    if (titleInput.validity.tooShort) {
-      titleInput.setCustomValidity('Описание должно состоять минимум из 30-ти символов');
-    } else if (titleInput.validity.tooLong) {
-      titleInput.setCustomValidity('Описание не должно превышать 100 символов');
-    } else if (titleInput.validity.valueMissing) {
-      titleInput.setCustomValidity('Обязательное поле');
-    } else {
-      titleInput.setCustomValidity('');
-    }
-  });
-
-  var pricePerNightInput = document.querySelector('#price');
-
-  pricePerNightInput.addEventListener('invalid', function () {
-    if (pricePerNightInput.validity.rangeUnderflow) {
-      var minPricePerNightInput = pricePerNightInput.getAttribute('min');
-      pricePerNightInput.setCustomValidity('Цена за ночь не может быть менее ' + minPricePerNightInput + ' руб.');
-    } else if (pricePerNightInput.validity.rangeOverflow) {
-      pricePerNightInput.setCustomValidity('Цена за ночь не должна превышать 1 000 000 руб.');
-    } else if (pricePerNightInput.validity.valueMissing) {
-      pricePerNightInput.setCustomValidity('Обязательное поле');
-    } else {
-      pricePerNightInput.setCustomValidity('');
-    }
-  });
-
   function selectOfferOption(value) {
     switch (value) {
       case 'flat':
@@ -117,9 +124,6 @@
     }
   }
 
-  var selectOffer = document.querySelector('#type');
-  selectOffer.addEventListener('change', selectOfferChangeHandler);
-
   function selectOfferChangeHandler(evt) {
     var priceInput = document.querySelector('#price');
     var currentValue = evt.target.value;
@@ -127,9 +131,6 @@
     priceInput.setAttribute('min', minPrice);
     priceInput.setAttribute('placeholder', minPrice);
   }
-
-  var selectTimein = document.querySelector('#timein');
-  var selectTimeout = document.querySelector('#timeout');
 
   function selectTimeChangeHandler(evt) {
     var currentIndex = evt.target.options.selectedIndex;
@@ -139,13 +140,6 @@
       selectTimein.options[currentIndex].selected = true;
     }
   }
-
-  selectTimein.addEventListener('change', selectTimeChangeHandler);
-  selectTimeout.addEventListener('change', selectTimeChangeHandler);
-
-  var selectRooms = document.querySelector('#room_number');
-  var selectGuests = document.querySelector('#capacity');
-  var optionsGuests = selectGuests.options;
 
   function disableSelectGuests() {
     for (var i = 0; i < optionsGuests.length; i++) {
@@ -185,8 +179,6 @@
     }
   }
 
-  selectRooms.addEventListener('change', selectRoomsChangeHandler);
-
   function getCenterPositionPin(elem) {
     var MAIN_PIN_WIDTH = 62;
     var MAIN_PIN_HEIGHT = 84;
@@ -200,6 +192,4 @@
     var centerPositionPin = getCenterPositionPin(pinMain);
     addressInput.value = centerPositionPin;
   }
-
-  setAddressInputValue();
 })();
