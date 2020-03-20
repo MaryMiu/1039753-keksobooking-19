@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var actualPins = [];
   var PIN_AMOUNT = 8;
   var mapPins = document.querySelector('.map__pins');
   var pinMain = document.querySelector('.map__pin--main');
@@ -10,12 +11,12 @@
     create: function () {
       window.map.show();
 
-      for (var i = 0; i < PIN_AMOUNT; i++) {
-        var pin = window.pin.create(i);
-        window.card.data.push(pin);
-      }
-
-      window.card.data.forEach(function (card) {
+      // for (var i = 0; i < PIN_AMOUNT; i++) {
+      //   var pin = window.pin.create(i);
+      //   window.card.data.push(pin);
+      // }
+      window.card.data = actualPins;
+      actualPins.forEach(function (card) {
         var template = window.pin.render(card);
         fragment.appendChild(template);
       });
@@ -32,4 +33,23 @@
       }
     }
   };
+
+  var successHandler = function (truePins) {
+    actualPins = truePins;
+    window.pins.create(actualPins);
+  };
+
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  window.backend.load(successHandler, errorHandler);
 })();

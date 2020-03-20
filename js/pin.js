@@ -53,7 +53,7 @@
       pinCloneTemplate.style.top = calcPinPositionY(elem.location.y) + 'px';
       pinCloneTemplate.querySelector('img').src = elem.author.avatar;
       pinCloneTemplate.querySelector('img').alt = elem.offer.title;
-      elem.offer.address();
+      //elem.offer.address();
       return pinCloneTemplate;
     }
   };
