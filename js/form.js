@@ -14,8 +14,14 @@
   var selectGuests = document.querySelector('#capacity');
   var optionsGuests = selectGuests.options;
 
+  window.setAddressInputValue = function () {
+    var addressInput = document.querySelector('#address');
+    var centerPositionPin = getCenterPositionPin(pinMain);
+    addressInput.value = centerPositionPin;
+  };
+
   disableAllForms();
-  setAddressInputValue();
+  window.setAddressInputValue();
 
   pinMain.addEventListener('mousedown', pinMouseDownHandler);
   pinMain.addEventListener('keydown', pinKeydownHandler);
@@ -185,11 +191,5 @@
     var centerPinX = elem.offsetLeft + MAIN_PIN_WIDTH / 2;
     var centerPinY = elem.offsetTop + MAIN_PIN_HEIGHT;
     return centerPinX + ', ' + centerPinY;
-  }
-
-  function setAddressInputValue() {
-    var addressInput = document.querySelector('#address');
-    var centerPositionPin = getCenterPositionPin(pinMain);
-    addressInput.value = centerPositionPin;
   }
 })();

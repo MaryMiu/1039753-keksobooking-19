@@ -32,6 +32,8 @@
     function mouseUpHandler(upEvt) {
       upEvt.preventDefault();
 
+      window.setAddressInputValue();
+
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
     }
