@@ -2,7 +2,6 @@
 
 (function () {
   var actualPins = [];
-  var PIN_AMOUNT = 8;
   var mapPins = document.querySelector('.map__pins');
   var pinMain = document.querySelector('.map__pin--main');
   var fragment = document.createDocumentFragment();
@@ -11,10 +10,6 @@
     create: function () {
       window.map.show();
 
-      // for (var i = 0; i < PIN_AMOUNT; i++) {
-      //   var pin = window.pin.create(i);
-      //   window.card.data.push(pin);
-      // }
       window.card.data = actualPins;
       actualPins.forEach(function (card) {
         var template = window.pin.render(card);
