@@ -20,19 +20,26 @@
     addressInput.value = centerPositionPin;
   };
 
+  window.form = {
+    deactivate: function () {
+      disableAllForms();
+      formNotice.classList.add('ad-form--disabled');
+    },
+    activate: function () {
+      window.pins.create();
+      enableAllForms();
+      formNotice.classList.remove('ad-form--disabled');
+    },
+    reset: function () {
+      resetAllForm();
+    }
+  };
+
   disableAllForms();
   window.setAddressInputValue();
 
-  pinMain.addEventListener('mousedown', pinMouseDownHandler);
-  pinMain.addEventListener('keydown', pinKeydownHandler);
-
   resetButton.addEventListener('click', function () {
-    deactivate();
-    window.pins.remove();
-    window.map.hide();
-    pinMain.addEventListener('mousedown', pinMouseDownHandler);
-    pinMain.addEventListener('keydown', pinKeydownHandler);
-    formMap.reset();
+    window.map.reset();
   });
 
   titleInput.addEventListener('invalid', function () {
@@ -65,18 +72,27 @@
   selectTimeout.addEventListener('change', selectTimeChangeHandler);
   selectRooms.addEventListener('change', selectRoomsChangeHandler);
 
+  function resetForm(form) {
+    form.reset();
+  }
+
   function disableForm(form) {
-    var elems = form.querySelectorAll('input, select');
+    var elems = form.querySelectorAll('input, select, button, textarea');
     elems.forEach(function (item) {
       item.disabled = true;
     });
   }
 
   function enableForm(form) {
-    var elems = form.querySelectorAll('input, select');
+    var elems = form.querySelectorAll('input, select, button, textarea');
     elems.forEach(function (item) {
       item.disabled = false;
     });
+  }
+
+  function resetAllForm() {
+    resetForm(formNotice);
+    resetForm(formMap);
   }
 
   function disableAllForms() {
@@ -87,32 +103,6 @@
   function enableAllForms() {
     enableForm(formNotice);
     enableForm(formMap);
-  }
-
-  function deactivate() {
-    disableAllForms();
-    formNotice.classList.add('ad-form--disabled');
-  }
-
-  function activate() {
-    window.pins.create();
-    enableAllForms();
-    formNotice.classList.remove('ad-form--disabled');
-  }
-
-  function pinMouseDownHandler(evt) {
-    if (evt.button === 0) {
-      activate();
-      pinMain.removeEventListener('mousedown', pinMouseDownHandler);
-    }
-  }
-
-  function pinKeydownHandler(evt) {
-    var ENTER_KEY = 'Enter';
-    if (evt.key === ENTER_KEY) {
-      activate();
-      pinMain.removeEventListener('keydown', pinKeydownHandler);
-    }
   }
 
   function selectOfferOption(value) {
