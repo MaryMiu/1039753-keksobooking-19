@@ -4,7 +4,6 @@
   var fragment = document.createDocumentFragment();
 
   window.card = {
-    data: [],
     render: function (elem) {
       var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
       var cardCloneTemplate = cardTemplate.cloneNode(true);
@@ -25,7 +24,7 @@
     },
     create: function (index) {
       var map = document.querySelector('.map');
-      this.render(window.card.data[index]);
+      this.render(window.pins.actualPins[index]);
       map.appendChild(fragment);
     },
     remove: function () {
