@@ -54,10 +54,10 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.form.onTypeChange = function (value) {
+  window.form.onTypeChange = window.debounce(function (value) {
     typeHouse = value;
     window.pins.update();
-  };
+  });
 
   window.backend.load(successHandler, errorHandler);
 })();
