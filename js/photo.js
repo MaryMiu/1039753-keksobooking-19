@@ -8,25 +8,6 @@
   var fileChooser = document.querySelector('.ad-form__upload input[type=file]');
   var filePreview = document.querySelector('.ad-form__photo');
 
-  // fileChooser.addEventListener('change', function () {
-  //   var file = fileChooser.files[0];
-  //   var fileName = file.name.toLowerCase();
-
-  //   var matches = FILE_TYPES.some(function (it) {
-  //     return fileName.endsWith(it);
-  //   });
-
-  //   if (matches) {
-  //     var reader = new FileReader();
-
-  //     reader.addEventListener('load', function () {
-  //       preview.src = reader.result;
-  //     });
-
-  //     reader.readAsDataURL(file);
-  //   }
-  // });
-
   avatarChooser.addEventListener('change', inputChangeHandler(avatarPreview));
   fileChooser.addEventListener('change', inputChangeHandler(filePreview));
 
@@ -57,6 +38,6 @@
 
         reader.readAsDataURL(file);
       }
-    }
+    };
   }
 })();

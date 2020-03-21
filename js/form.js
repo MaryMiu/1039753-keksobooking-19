@@ -12,6 +12,8 @@
   var selectTimeout = document.querySelector('#timeout');
   var selectRooms = document.querySelector('#room_number');
   var selectGuests = document.querySelector('#capacity');
+  var avatar = document.querySelector('.ad-form-header__preview img');
+  var photo = document.querySelector('.ad-form__photo');
   var optionsGuests = selectGuests.options;
 
   window.setAddressInputValue = function () {
@@ -27,10 +29,12 @@
     },
     activate: function () {
       enableAllForms();
+      startSelectGuestsCount();
       window.pins.create(window.pins.actualPins);
       formNotice.classList.remove('ad-form--disabled');
     },
     reset: function () {
+      resetAllImg();
       resetAllForm();
     },
     onTypeChange: function () {},
@@ -82,6 +86,16 @@
     elem.reset();
   }
 
+  function resetAvatar() {
+    avatar.src = 'img/muffin-grey.svg';
+  }
+
+  function resetPhotos() {
+    if (photo.children) {
+      photo.innerHTML = '';
+    }
+  }
+
   function disableForm(elem) {
     var elems = elem.querySelectorAll('input, select, button, textarea');
     elems.forEach(function (item) {
@@ -99,6 +113,11 @@
   function resetAllForm() {
     resetForm(formNotice);
     resetForm(formMap);
+  }
+
+  function resetAllImg() {
+    resetAvatar();
+    resetPhotos();
   }
 
   function disableAllForms() {
@@ -158,26 +177,30 @@
     }
   }
 
+  function startSelectGuestsCount() {
+    selectGuests.value = 1;
+    selectGuests.options[0].disabled = true;
+    selectGuests.options[3].disabled = true;
+  }
+
   function selectRoomsChangeHandler(evt) {
     var currentValue = evt.target.value;
     disableSelectGuests();
-    switch (currentValue) {
-      case '3':
-        selectGuests.options[0].disabled = false;
-        break;
-      case '2':
-        selectGuests.options[1].disabled = false;
-        break;
-      case '1':
-        selectGuests.options[2].disabled = false;
-        selectGuestsCount();
-        break;
-      case '100':
-        selectGuests.options[3].disabled = false;
-        selectGuestsCount();
-        break;
-      default:
-        break;
+    if (currentValue === '3') {
+      selectGuests.options[0].disabled = false;
+      selectGuests.options[1].disabled = false;
+      selectGuests.options[2].disabled = false;
+      selectGuestsCount();
+    } else if (currentValue === '2') {
+      selectGuests.options[1].disabled = false;
+      selectGuests.options[2].disabled = false;
+      selectGuestsCount();
+    } else if (currentValue === '1') {
+      selectGuests.options[2].disabled = false;
+      selectGuestsCount();
+    } else if (currentValue === '100') {
+      selectGuests.options[3].disabled = false;
+      selectGuestsCount();
     }
   }
 
