@@ -26,13 +26,18 @@
       formNotice.classList.add('ad-form--disabled');
     },
     activate: function () {
-      window.pins.create();
       enableAllForms();
+      window.pins.create(window.pins.actualPins);
       formNotice.classList.remove('ad-form--disabled');
     },
     reset: function () {
       resetAllForm();
-    }
+    },
+    onTypeChange: function () {},
+    onPriceChange: function () {},
+    onRoomsChange: function () {},
+    onGuestsChange: function () {},
+    onFeaturesChange: function () {}
   };
 
   disableAllForms();
@@ -71,20 +76,21 @@
   selectTimein.addEventListener('change', selectTimeChangeHandler);
   selectTimeout.addEventListener('change', selectTimeChangeHandler);
   selectRooms.addEventListener('change', selectRoomsChangeHandler);
+  formMap.addEventListener('change', formMapChangeHandler);
 
-  function resetForm(form) {
-    form.reset();
+  function resetForm(elem) {
+    elem.reset();
   }
 
-  function disableForm(form) {
-    var elems = form.querySelectorAll('input, select, button, textarea');
+  function disableForm(elem) {
+    var elems = elem.querySelectorAll('input, select, button, textarea');
     elems.forEach(function (item) {
       item.disabled = true;
     });
   }
 
-  function enableForm(form) {
-    var elems = form.querySelectorAll('input, select, button, textarea');
+  function enableForm(elem) {
+    var elems = elem.querySelectorAll('input, select, button, textarea');
     elems.forEach(function (item) {
       item.disabled = false;
     });
@@ -182,4 +188,18 @@
     var centerPinY = elem.offsetTop + MAIN_PIN_HEIGHT;
     return centerPinX + ', ' + centerPinY;
   }
+
+  function formMapChangeHandler(evt) {
+    if (evt.target.closest('#housing-type')) {
+      window.form.onTypeChange(evt.target.value);
+    } else if (evt.target.closest('#housing-price')) {
+      window.form.onPriceChange(evt.target.value);
+    } else if (evt.target.closest('#housing-rooms')) {
+      window.form.onRoomsChange(evt.target.value);
+    } else if (evt.target.closest('#housing-guests')) {
+      window.form.onFeaturesChange(evt.target.value);
+    }
+    window.pins.update();
+  }
+
 })();
