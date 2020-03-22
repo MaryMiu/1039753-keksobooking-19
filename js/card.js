@@ -5,6 +5,7 @@
 
   window.card = {
     render: function (elem) {
+      var map = document.querySelector('.map');
       var cardTemplate = document.querySelector('#card').content.querySelector('.map__card');
       var cardCloneTemplate = cardTemplate.cloneNode(true);
       cardCloneTemplate.querySelector('.popup__title').textContent = elem.offer.title;
@@ -21,10 +22,6 @@
       cardCloneTemplate.querySelector('.popup__avatar').src = elem.author.avatar;
       cardCloneTemplate.querySelector('.popup__close').addEventListener('click', buttonCardCloseHandler);
       fragment.appendChild(cardCloneTemplate);
-    },
-    create: function (index) {
-      var map = document.querySelector('.map');
-      this.render(window.pins.actualPins[index]);
       map.appendChild(fragment);
     },
     remove: function () {

@@ -13,7 +13,7 @@
   var MIN_ROOMS = 1;
   var MAX_ROOMS = 10;
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
-  var pinType = ['palace', 'flat', 'house', 'bungalo'];
+  var pinTypes = ['palace', 'flat', 'house', 'bungalo'];
   var pinFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
   var counter = makeCounter();
 
@@ -31,7 +31,7 @@
             return addressX + ', ' + addressY;
           },
           price: getRandomArbitrary(MIN_PRICE, MAX_PRICE),
-          type: pinType[getRandomArbitrary(0, pinType.length)],
+          type: pinTypes[getRandomArbitrary(0, pinTypes.length)],
           rooms: getRandomArbitrary(MIN_ROOMS, MAX_ROOMS),
           guests: getRandomArbitrary(MIN_GUESTS, MAX_GUESTS),
           checkin: getRandomTime(),
@@ -53,6 +53,16 @@
       pinCloneTemplate.style.top = calcPinPositionY(elem.location.y) + 'px';
       pinCloneTemplate.querySelector('img').src = elem.author.avatar;
       pinCloneTemplate.querySelector('img').alt = elem.offer.title;
+
+      function pinClickHandler() {
+        var hasCardOnMap = document.querySelector('.map__card');
+        if (hasCardOnMap) {
+          window.card.remove();
+        }
+        window.card.render(elem);
+      }
+      pinCloneTemplate.addEventListener('click', pinClickHandler);
+
       return pinCloneTemplate;
     }
   };

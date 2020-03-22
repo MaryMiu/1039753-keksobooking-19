@@ -2,7 +2,6 @@
 
 (function () {
   var formNotice = document.querySelector('.ad-form');
-  var formMap = document.querySelector('.map__filters');
   var pinMain = document.querySelector('.map__pin--main');
   var resetButton = formNotice.querySelector('.ad-form__reset');
   var titleInput = document.querySelector('#title');
@@ -16,36 +15,30 @@
   var photo = document.querySelector('.ad-form__photo');
   var optionsGuests = selectGuests.options;
 
-  window.setAddressInputValue = function () {
-    var addressInput = document.querySelector('#address');
-    var centerPositionPin = getCenterPositionPin(pinMain);
-    addressInput.value = centerPositionPin;
-  };
-
   window.form = {
     deactivate: function () {
-      disableAllForms();
+      disableForm();
       formNotice.classList.add('ad-form--disabled');
     },
     activate: function () {
-      enableAllForms();
+      enableForm();
       startSelectGuestsCount();
-      window.pins.create(window.pins.actualPins);
       formNotice.classList.remove('ad-form--disabled');
     },
     reset: function () {
+      setMinPrice();
       resetAllImg();
-      resetAllForm();
+      resetForm();
     },
-    onTypeChange: function () {},
-    onPriceChange: function () {},
-    onRoomsChange: function () {},
-    onGuestsChange: function () {},
-    onFeaturesChange: function () {}
+    setAddress: function () {
+      var addressInput = document.querySelector('#address');
+      var positionPin = getCenterPositionPin(pinMain);
+      addressInput.value = positionPin;
+    }
   };
 
-  disableAllForms();
-  window.setAddressInputValue();
+  disableForm();
+  setStartCenterPosition();
 
   resetButton.addEventListener('click', function () {
     window.map.reset();
@@ -80,11 +73,6 @@
   selectTimein.addEventListener('change', selectTimeChangeHandler);
   selectTimeout.addEventListener('change', selectTimeChangeHandler);
   selectRooms.addEventListener('change', selectRoomsChangeHandler);
-  formMap.addEventListener('change', formMapChangeHandler);
-
-  function resetForm(elem) {
-    elem.reset();
-  }
 
   function resetAvatar() {
     avatar.src = 'img/muffin-grey.svg';
@@ -96,23 +84,22 @@
     }
   }
 
-  function disableForm(elem) {
-    var elems = elem.querySelectorAll('input, select, button, textarea');
+  function resetForm() {
+    formNotice.reset();
+  }
+
+  function disableForm() {
+    var elems = formNotice.querySelectorAll('input, select, button, textarea');
     elems.forEach(function (item) {
       item.disabled = true;
     });
   }
 
-  function enableForm(elem) {
-    var elems = elem.querySelectorAll('input, select, button, textarea');
+  function enableForm() {
+    var elems = formNotice.querySelectorAll('input, select, button, textarea');
     elems.forEach(function (item) {
       item.disabled = false;
     });
-  }
-
-  function resetAllForm() {
-    resetForm(formNotice);
-    resetForm(formMap);
   }
 
   function resetAllImg() {
@@ -120,15 +107,6 @@
     resetPhotos();
   }
 
-  function disableAllForms() {
-    disableForm(formNotice);
-    disableForm(formMap);
-  }
-
-  function enableAllForms() {
-    enableForm(formNotice);
-    enableForm(formMap);
-  }
 
   function selectOfferOption(value) {
     switch (value) {
@@ -149,6 +127,13 @@
     var priceInput = document.querySelector('#price');
     var currentValue = evt.target.value;
     var minPrice = selectOfferOption(currentValue);
+    priceInput.setAttribute('min', minPrice);
+    priceInput.setAttribute('placeholder', minPrice);
+  }
+
+  function setMinPrice() {
+    var priceInput = document.querySelector('#price');
+    var minPrice = '1000';
     priceInput.setAttribute('min', minPrice);
     priceInput.setAttribute('placeholder', minPrice);
   }
@@ -207,22 +192,41 @@
   function getCenterPositionPin(elem) {
     var MAIN_PIN_WIDTH = 62;
     var MAIN_PIN_HEIGHT = 84;
-    var centerPinX = elem.offsetLeft + MAIN_PIN_WIDTH / 2;
-    var centerPinY = elem.offsetTop + MAIN_PIN_HEIGHT;
+    var MIN_X = 0;
+    var MAX_X = 1200;
+    var MIN_Y = 130;
+    var MAX_Y = 630;
+    var centerPinX = Math.floor(elem.offsetLeft + MAIN_PIN_WIDTH / 2);
+    var centerPinY = Math.floor(elem.offsetTop + MAIN_PIN_HEIGHT);
+    if (centerPinY < MIN_Y) {
+      pinMain.style.top = (MIN_Y - MAIN_PIN_HEIGHT) + 'px';
+      centerPinY = MIN_Y;
+    } else if (centerPinY > MAX_Y) {
+      pinMain.style.top = (MAX_Y - MAIN_PIN_HEIGHT) + 'px';
+      centerPinY = MAX_Y;
+    }
+    if (centerPinX < MIN_X) {
+      pinMain.style.left = (MIN_X - MAIN_PIN_WIDTH / 2) + 'px';
+      centerPinX = MIN_X;
+    } else if (centerPinX > MAX_X) {
+      pinMain.style.left = (MAX_X - MAIN_PIN_WIDTH / 2) + 'px';
+      centerPinX = MAX_X;
+    }
     return centerPinX + ', ' + centerPinY;
   }
 
-  function formMapChangeHandler(evt) {
-    if (evt.target.closest('#housing-type')) {
-      window.form.onTypeChange(evt.target.value);
-    } else if (evt.target.closest('#housing-price')) {
-      window.form.onPriceChange(evt.target.value);
-    } else if (evt.target.closest('#housing-rooms')) {
-      window.form.onRoomsChange(evt.target.value);
-    } else if (evt.target.closest('#housing-guests')) {
-      window.form.onFeaturesChange(evt.target.value);
-    }
-    window.pins.update();
+  function setStartCenterPosition() {
+    var addressInput = document.querySelector('#address');
+    var positionPin = getStartCenterPosition(pinMain);
+    addressInput.value = positionPin;
+  }
+
+  function getStartCenterPosition(elem) {
+    var MAIN_START_PIN_WIDTH = 65;
+    var MAIN_START_PIN_HEIGHT = 65;
+    var centerPinX = Math.floor(elem.offsetLeft + MAIN_START_PIN_WIDTH / 2);
+    var centerPinY = Math.floor(elem.offsetTop + MAIN_START_PIN_HEIGHT / 2);
+    return centerPinX + ', ' + centerPinY;
   }
 
 })();
