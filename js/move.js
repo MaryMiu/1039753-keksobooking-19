@@ -3,6 +3,7 @@
 (function () {
 
   var pinHandle = document.querySelector('.map__pin--main');
+  var isInit = false;
 
   pinHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -31,8 +32,11 @@
 
     function mouseUpHandler(upEvt) {
       upEvt.preventDefault();
-
-      window.setAddressInputValue();
+      if (!isInit) {
+        window.map.init();
+        isInit = true;
+      }
+      window.form.setAddress();
 
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);

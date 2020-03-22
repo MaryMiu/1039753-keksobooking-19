@@ -3,10 +3,13 @@
 (function () {
   var ESC_KEY = 'Escape';
   var map = document.querySelector('.map');
-  var mapPins = document.querySelector('.map__pins');
   var mapPinMain = document.querySelector('.map__pin--main');
 
   window.map = {
+    init: function () {
+      window.backend.load(successHandler, errorHandler);
+      window.form.activate();
+    },
     show: function () {
       map.classList.remove('map--faded');
     },
@@ -24,25 +27,9 @@
     }
   };
 
-  mapPins.addEventListener('click', mapPinsClickHandler);
   document.addEventListener('keydown', documentKeydownHandler);
   mapPinMain.addEventListener('mousedown', mapPinMainMouseDownHandler);
   mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
-
-  function mapPinsClickHandler(evt) {
-    var currentPin = evt.target.closest('.map__pin');
-    if (evt.target.closest('.map__pin--main')) {
-      return;
-    }
-    if (!currentPin) {
-      return;
-    }
-    var mapPinsArray = Array.from(mapPins.children).slice(2);
-    var indexPin = mapPinsArray.indexOf(currentPin);
-    window.card.remove();
-    window.card.create(indexPin);
-    document.addEventListener('keydown', documentKeydownHandler);
-  }
 
   function documentKeydownHandler(evt) {
     if (evt.key === ESC_KEY) {
@@ -52,7 +39,6 @@
 
   function mapPinMainMouseDownHandler(evt) {
     if (evt.button === 0) {
-      window.form.activate();
       mapPinMain.removeEventListener('mousedown', mapPinMainMouseDownHandler);
     }
   }
@@ -60,9 +46,22 @@
   function mapPinMainKeydownHandler(evt) {
     var ENTER_KEY = 'Enter';
     if (evt.key === ENTER_KEY) {
-      window.form.activate();
       mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
     }
   }
+  var successHandler = function (data) {
+    window.filter.activate(data);
+  };
 
+  var errorHandler = function (errorMessage) {
+    var node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
 })();
