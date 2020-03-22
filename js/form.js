@@ -29,6 +29,7 @@
       setMinPrice();
       resetAllImg();
       resetForm();
+      setStartCenterPosition();
     },
     setAddress: function () {
       var addressInput = document.querySelector('#address');
@@ -216,9 +217,13 @@
   }
 
   function setStartCenterPosition() {
+    var MAIN_PIN_LEFT = 570;
+    var MAIN_PIN_TOP = 375;
     var addressInput = document.querySelector('#address');
     var positionPin = getStartCenterPosition(pinMain);
     addressInput.value = positionPin;
+    pinMain.style.left = MAIN_PIN_LEFT + 'px';
+    pinMain.style.top = MAIN_PIN_TOP + 'px';
   }
 
   function getStartCenterPosition(elem) {

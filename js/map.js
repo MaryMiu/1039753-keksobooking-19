@@ -4,11 +4,13 @@
   var ESC_KEY = 'Escape';
   var map = document.querySelector('.map');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var isInit = false;
 
   window.map = {
     init: function () {
       window.backend.load(successHandler, errorHandler);
       window.form.activate();
+      window.map.show();
     },
     show: function () {
       map.classList.remove('map--faded');
@@ -17,6 +19,7 @@
       map.classList.add('map--faded');
     },
     reset: function () {
+      isInit = false;
       window.pins.remove();
       window.card.remove();
       window.map.hide();
@@ -49,11 +52,12 @@
       mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
     }
   }
-  var successHandler = function (data) {
-    window.filter.activate(data);
-  };
 
-  var errorHandler = function (errorMessage) {
+  function successHandler(data) {
+    window.filter.activate(data);
+  }
+
+  function errorHandler(errorMessage) {
     var node = document.createElement('div');
     node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
     node.style.position = 'absolute';
@@ -63,5 +67,46 @@
 
     node.textContent = errorMessage;
     document.body.insertAdjacentElement('afterbegin', node);
-  };
+  }
+
+  mapPinMain.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    function mouseMoveHandler(moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
+      mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+    }
+
+    function mouseUpHandler(upEvt) {
+      upEvt.preventDefault();
+      if (!isInit) {
+        window.map.init();
+        isInit = true;
+      }
+      window.form.setAddress();
+
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    }
+
+    document.addEventListener('mousemove', mouseMoveHandler);
+    document.addEventListener('mouseup', mouseUpHandler);
+  });
 })();

@@ -7,7 +7,6 @@
 
   window.pins = {
     create: function (array) {
-      window.map.show();
       array.forEach(function (card) {
         var template = window.pin.render(card);
         fragment.appendChild(template);
