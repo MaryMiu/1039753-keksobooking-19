@@ -3,17 +3,17 @@
 (function () {
   var PINS_COUNT = 5;
   var priceRange = {
-    LOW: {
-      MIN: 0,
-      MAX: 10000
+    low: {
+      min: 0,
+      max: 10000
     },
-    MIDDLE: {
-      MIN: 10000,
-      MAX: 50000
+    middle: {
+      min: 10000,
+      max: 50000
     },
-    HIGH: {
-      MIN: 50000,
-      MAX: Infinity
+    high: {
+      min: 50000,
+      max: Infinity
     }
   };
   var mapFilters = document.querySelector('.map__filters');
@@ -48,8 +48,8 @@
   }
 
   function filterByPrice(item) {
-    var filteringPrice = priceRange[priceHouse.value.toUpperCase()];
-    return filteringPrice ? item.offer.price >= filteringPrice.MIN && item.offer.price <= filteringPrice.MAX : true;
+    var filteringPrice = priceRange[priceHouse.value];
+    return filteringPrice ? item.offer.price >= filteringPrice.min && item.offer.price <= filteringPrice.max : true;
   }
 
   function filterByRooms(item) {
