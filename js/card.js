@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var PHOTO_WIDTH = 45;
+  var PHOTO_HEIGHT = 40;
   var fragment = document.createDocumentFragment();
 
   window.card = {
@@ -62,8 +64,8 @@
     arr.forEach(function (item) {
       var elem = document.createElement('img');
       elem.className = 'popup__photo';
-      elem.width = 45;
-      elem.height = 40;
+      elem.width = PHOTO_WIDTH;
+      elem.height = PHOTO_HEIGHT;
       elem.alt = 'Фотография жилья';
       elem.src = item;
       list.append(elem);

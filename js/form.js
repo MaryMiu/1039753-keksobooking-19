@@ -1,6 +1,24 @@
 'use strict';
 
 (function () {
+  var MAIN_PIN_WIDTH = 62;
+  var MAIN_PIN_HEIGHT = 84;
+  var MIN_X = 0;
+  var MAX_X = 1200;
+  var MIN_Y = 130;
+  var MAX_Y = 630;
+  var MAIN_PIN_LEFT = 570;
+  var MAIN_PIN_TOP = 375;
+  var MAIN_START_PIN_WIDTH = 65;
+  var MAIN_START_PIN_HEIGHT = 65;
+  var FLAT_MIN_PRICE = 1000;
+  var BUNGALO_MIN_PRICE = 0;
+  var HOUSE_MIN_PRICE = 5000;
+  var PALACE_MIN_PRICE = 10000;
+  var ROOM_1 = '1';
+  var ROOMS_2 = '2';
+  var ROOMS_3 = '3';
+  var ROOMS_0 = '100';
   var formNotice = document.querySelector('.ad-form');
   var pinMain = document.querySelector('.map__pin--main');
   var resetButton = formNotice.querySelector('.ad-form__reset');
@@ -112,13 +130,13 @@
   function selectOfferOption(value) {
     switch (value) {
       case 'flat':
-        return 1000;
+        return FLAT_MIN_PRICE;
       case 'bungalo':
-        return 0;
+        return BUNGALO_MIN_PRICE;
       case 'house':
-        return 5000;
+        return HOUSE_MIN_PRICE;
       case 'palace':
-        return 10000;
+        return PALACE_MIN_PRICE;
       default:
         throw new Error('Нет таких значений');
     }
@@ -134,9 +152,8 @@
 
   function setMinPrice() {
     var priceInput = document.querySelector('#price');
-    var minPrice = '1000';
-    priceInput.setAttribute('min', minPrice);
-    priceInput.setAttribute('placeholder', minPrice);
+    priceInput.setAttribute('min', FLAT_MIN_PRICE);
+    priceInput.setAttribute('placeholder', FLAT_MIN_PRICE);
   }
 
   function selectTimeChangeHandler(evt) {
@@ -166,37 +183,32 @@
   function startSelectGuestsCount() {
     selectGuests.value = 1;
     selectGuests.options[0].disabled = true;
+    selectGuests.options[1].disabled = true;
     selectGuests.options[3].disabled = true;
   }
 
   function selectRoomsChangeHandler(evt) {
     var currentValue = evt.target.value;
     disableSelectGuests();
-    if (currentValue === '3') {
+    if (currentValue === ROOMS_3) {
       selectGuests.options[0].disabled = false;
       selectGuests.options[1].disabled = false;
       selectGuests.options[2].disabled = false;
       selectGuestsCount();
-    } else if (currentValue === '2') {
+    } else if (currentValue === ROOMS_2) {
       selectGuests.options[1].disabled = false;
       selectGuests.options[2].disabled = false;
       selectGuestsCount();
-    } else if (currentValue === '1') {
+    } else if (currentValue === ROOM_1) {
       selectGuests.options[2].disabled = false;
       selectGuestsCount();
-    } else if (currentValue === '100') {
+    } else if (currentValue === ROOMS_0) {
       selectGuests.options[3].disabled = false;
       selectGuestsCount();
     }
   }
 
   function getCenterPositionPin(elem) {
-    var MAIN_PIN_WIDTH = 62;
-    var MAIN_PIN_HEIGHT = 84;
-    var MIN_X = 0;
-    var MAX_X = 1200;
-    var MIN_Y = 130;
-    var MAX_Y = 630;
     var centerPinX = Math.floor(elem.offsetLeft + MAIN_PIN_WIDTH / 2);
     var centerPinY = Math.floor(elem.offsetTop + MAIN_PIN_HEIGHT);
     if (centerPinY < MIN_Y) {
@@ -217,8 +229,6 @@
   }
 
   function setStartCenterPosition() {
-    var MAIN_PIN_LEFT = 570;
-    var MAIN_PIN_TOP = 375;
     var addressInput = document.querySelector('#address');
     var positionPin = getStartCenterPosition(pinMain);
     addressInput.value = positionPin;
@@ -227,8 +237,6 @@
   }
 
   function getStartCenterPosition(elem) {
-    var MAIN_START_PIN_WIDTH = 65;
-    var MAIN_START_PIN_HEIGHT = 65;
     var centerPinX = Math.floor(elem.offsetLeft + MAIN_START_PIN_WIDTH / 2);
     var centerPinY = Math.floor(elem.offsetTop + MAIN_START_PIN_HEIGHT / 2);
     return centerPinX + ', ' + centerPinY;

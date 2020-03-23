@@ -2,8 +2,7 @@
 
 (function () {
   var PINS_COUNT = 5;
-
-  var PriceRange = {
+  var priceRange = {
     LOW: {
       MIN: 0,
       MAX: 10000
@@ -17,7 +16,6 @@
       MAX: Infinity
     }
   };
-
   var mapFilters = document.querySelector('.map__filters');
   var filterControls = mapFilters.querySelectorAll('select, input');
   var typeHouse = mapFilters.querySelector('#housing-type');
@@ -50,7 +48,7 @@
   }
 
   function filterByPrice(item) {
-    var filteringPrice = PriceRange[priceHouse.value.toUpperCase()];
+    var filteringPrice = priceRange[priceHouse.value.toUpperCase()];
     return filteringPrice ? item.offer.price >= filteringPrice.MIN && item.offer.price <= filteringPrice.MAX : true;
   }
 

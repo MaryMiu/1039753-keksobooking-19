@@ -2,6 +2,7 @@
 
 (function () {
   var ESC_KEY = 'Escape';
+  var ENTER_KEY = 'Enter';
   var map = document.querySelector('.map');
   var mapPinMain = document.querySelector('.map__pin--main');
   var isInit = false;
@@ -27,6 +28,7 @@
       mapPinMain.addEventListener('keydown', mapPinMainKeydownHandler);
       window.form.reset();
       window.form.deactivate();
+      window.filter.deactivate();
     }
   };
 
@@ -47,7 +49,6 @@
   }
 
   function mapPinMainKeydownHandler(evt) {
-    var ENTER_KEY = 'Enter';
     if (evt.key === ENTER_KEY) {
       mapPinMain.removeEventListener('keydown', mapPinMainKeydownHandler);
     }
@@ -92,18 +93,17 @@
 
       mapPinMain.style.top = (mapPinMain.offsetTop - shift.y) + 'px';
       mapPinMain.style.left = (mapPinMain.offsetLeft - shift.x) + 'px';
+      window.form.setAddress();
     }
 
     function mouseUpHandler(upEvt) {
       upEvt.preventDefault();
-      if (!isInit) {
-        window.map.init();
-        isInit = true;
-      }
-      window.form.setAddress();
-
       document.removeEventListener('mousemove', mouseMoveHandler);
       document.removeEventListener('mouseup', mouseUpHandler);
+    }
+    if (!isInit) {
+      window.map.init();
+      isInit = true;
     }
 
     document.addEventListener('mousemove', mouseMoveHandler);

@@ -2,6 +2,8 @@
 
 (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+  var IMG_WIDTH = 40;
+  var IMG_HEIGHT = 40;
 
   var avatarChooser = document.querySelector('.ad-form__field input[type=file]');
   var avatarPreview = document.querySelector('.ad-form-header__preview img');
@@ -27,10 +29,11 @@
           if (preview.src) {
             preview.src = reader.result;
           } else {
+            preview.innerHTML = '';
             var image = document.createElement('img');
             image.src = reader.result;
-            image.width = 40;
-            image.height = 40;
+            image.width = IMG_WIDTH;
+            image.height = IMG_HEIGHT;
             image.alt = 'Фотография жилья';
             preview.appendChild(image);
           }

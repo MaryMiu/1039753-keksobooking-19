@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var form = document.querySelector('.ad-form');
   var ESC_KEY = 'Escape';
+  var form = document.querySelector('.ad-form');
 
   form.addEventListener('submit', function (evt) {
     window.backend.save(new FormData(form), successHandler, errorHandler);
@@ -30,11 +30,14 @@
 
   function documentKeydownHandler(evt) {
     if (evt.key === ESC_KEY) {
-      var messages = document.querySelectorAll('.success', '.error');
-      if (messages) {
-        messages.forEach(function (message) {
-          message.remove();
-        });
+      var errorMessage = document.querySelector('.error');
+      var successMessage = document.querySelector('.success');
+      if (successMessage || errorMessage) {
+        if (successMessage) {
+          successMessage.remove();
+        } else {
+          errorMessage.remove();
+        }
       }
     }
   }
